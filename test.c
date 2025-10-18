@@ -1,43 +1,110 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> 
+#include <string.h>
 
+#define TAM_MAX 10
+#define MAX_STR_LEN 50
+
+// Estrutura do nó
+typedef struct {
+    char dado[TAM_MAX][MAX_STR_LEN];
+    int quantidade;
+}lista_estatica;
+
+void inicializar_lista_estica(lista_estatica* lista);
+void inserir_nalista_estatica(lista_estatica* lista, const char texto);
+void remover_dalista_estatica(lista_estatica* lista, const char texto);
+void mostrar_lista_estatica(const lista_estatica* lista);
+
+typedef struct No {
+    char* dado;
+    struct No* proximo;
+
+}No;
+
+typedef No* lista_encadeada;
+
+void iniciar_lista_encadeada(lista_encadeada* lista);
+void inserir_lista_encadeada(lista_encadeada* lista, const char* texto);
+void remover_lista_encadeada(lista_encadeada* lista, const char* texto);
+
+void listar_lista_encadeada(const lista_encadeada lista);
+void liberar_lista_encadeada(lista_encadeada* lista);
+
+void menulista_estatica();
+void menulista_encadeada();
 
 int main() 
 {
-const int tamanho = 5;
-int *numeros = (int*)malloc(tamanho * sizeof(int));
-if (numeros == NULL) {
-    printf("erro de alocaçao de memoria");
-    return 1;
+int opcao;
+do{
+    printf("========== MANIPULACAO DE LISTA ==========\n");
+    Printf("1 - LISTA ESTATICA\n2 - LISTA ENCADEADA\n0 - SAIR DO PROGRAMA\nESCOLHA UMA DAS OPCOES ACIMA: ");
+    scanf("%d", &opcao);
+
+    switch (opcao){
+        case 1:
+             menulista_estatica();
+             break;
+
+        case 2:
+             menulista_encadeada();
+             break;
+
+        case 0:
+            printf("SAINDO DO PROGRAMA....\n");
+            break;
+    
+        default:
+             printf("opcao invalida, tente novamente\n");
+             break;
+}
+}while(opcao != NULL);
+
+return 0;
 }
 
-numeros[0] = 10;
-numeros[1] = 20;
-numeros[2] = 30;
-numeros[3] = 40;
-numeros[4] = 50;
+void inicializar_lista_estica(lista_estatica* lista) {
+    lista->quantidade = 0;
 
-for(int i = 0; i < 5; i++) {
-    printf("numero[%d] = %d\n", i, numeros[i]);
-}
-/*apos realloc vem os parametros que ee o bloco que desejo mudar no caso numero 
-e a quantidade vezes sizeof(e o tipo de dado que vai usar int, float, etc)*/
-int* num2 = (int*) realloc(numeros, 7 * sizeof(int));
-if (num2 != NULL) {
-    numeros = num2;
-} else {
-    printf("nao foi possivel continuar com a alocacao de memoria");
 }
 
-numeros[5] = 60;
-numeros[6] = 70;
+void inserir_nalista_estatica(lista_estatica* lista, const char texto) {
+    if (lista->quantidade == TAM_MAX) {
+        printf("erro lista cheia\n");
+        return;
+    }
+    strcpy(lista->dado[lista->quantidade], texto);
+    lista->quantidade++;
 
-printf("numeros com o array aumentado apos o realloc\n\n");
-for (int y = 0; y < 7; y++) {
-    printf("numeros[%d] = %d\n", y, numeros[y]);
+    printf("texto: %s\ninserido com sucesso", texto);
 }
 
-free(numeros);
+void remover_dalista_estatica(lista_estatica* lista, const char texto) {
+    int i, pos = -1;
 
-    return 0;
+    for(i = 0; i < lista->quantidade; i++) {
+        if (strcmp(lista->dado[i], texto) == 0) {
+            pos = i;
+            break;
+        }
+    }
+
+    if (pos == -1) {
+        printf("erro, texto nao encontrado");
+        return;
+    }
+
+    for (i = pos; i < lista->quantidade - 1; i ++) {
+        strcpy(lista->dado[i], lista->dado[i +1]);
+    }
+
+    lista->quantidade--;
+    printf("removido da lista com sucesso!\n");
+}
+
+
+void mostrar_lista_estatica(const lista_estatica* lista) {
+
+    
 }
